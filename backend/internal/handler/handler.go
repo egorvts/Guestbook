@@ -1,22 +1,27 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"uuid"
 
 	"github.com/egorvts/Guestbook/internal/dto"
 	"github.com/egorvts/Guestbook/internal/model"
-	"github.com/egorvts/Guestbook/internal/repository"
 )
 
 const MaxRequestBodySize = 1048576 // 1MB
 
-type Handler struct {
-	repository *repository.Repository
+type MessageRepository interface {
+	Create(context.Context, *model.Message) error
+	List(context.Context) ([]model.Message, error)
 }
 
-func NewHandler(repository *repository.Repository) *Handler {
+type Handler struct {
+	repository MessageRepository
+}
+
+func NewHandler(repository MessageRepository) *Handler {
 	return &Handler{
 		repository: repository,
 	}
