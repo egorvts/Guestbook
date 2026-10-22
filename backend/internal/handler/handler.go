@@ -39,7 +39,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	defer r.Body.Close()
 	r.Body = http.MaxBytesReader(w, r.Body, MaxRequestBodySize)
 
 	var req dto.CreateMessageRequest
