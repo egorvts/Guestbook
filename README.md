@@ -22,5 +22,5 @@ Configure these under **Settings → Secrets and variables → Actions**:
 | Type | Names |
 | --- | --- |
 | Secrets | `YC_SA_JSON_CREDENTIALS` (deployment account JSON key), `YDB_CONNECTION_STRING` |
-| Variables | `YC_FOLDER_ID`, `REGISTRY_ID`, `SERVICE_ACCOUNT_ID` (backend runtime account), `CONTAINER_NAME` |
-| Optional variables | `BUCKET` (default: `guestbook.vetoshkin.com`), `VITE_API_BASE_URL` (default: `/api`) |
+| Variables | `YC_FOLDER_ID`, `REGISTRY_ID`, `SERVICE_ACCOUNT_ID` (backend runtime account), `CONTAINER_NAME`, `BUCKET` |
+| Optional variables | (default: `guestbook.vetoshkin.com`), `VITE_API_BASE_URL` (default: `/api`) |
