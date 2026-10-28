@@ -1,0 +1,31 @@
+name: Set up Yandex Cloud CLI
+description: Install the YC CLI and authenticate the deployment service account.
+inputs:
+  service-account-key:
+    description: JSON authorized key for the deployment service account
+    required: true
+  folder-id:
+    description: Folder containing the deployment resources
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Install and configure YC CLI
+      shell: bash
+      env:
+        YC_SA_JSON_CREDENTIALS: ${{ inputs.service-account-key }}
+        YC_FOLDER_ID: ${{ inputs.folder-id }}
+      run: |
+        : "${YC_SA_JSON_CREDENTIALS:?Set YC_SA_JSON_CREDENTIALS}"
+        : "${YC_FOLDER_ID:?Set YC_FOLDER_ID}"
+        curl --fail --silent --show-error --location --retry 3 \
+          https://storage.yandexcloud.net/yandexcloud-yc/release/1.35.1/linux/amd64/yc \
+          --output "$RUNNER_TEMP/yc"
+        chmod +x "$RUNNER_TEMP/yc"
+        echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+        umask 077
+        printf '%s' "$YC_SA_JSON_CREDENTIALS" > "$RUNNER_TEMP/yc-service-account-key.json"
+        "$RUNNER_TEMP/yc" config profile create github-actions
+        "$RUNNER_TEMP/yc" config set endpoint api.cloud.yandex.net:443
+        "$RUNNER_TEMP/yc" config set service-account-key "$RUNNER_TEMP/yc-service-account-key.json"
+        "$RUNNER_TEMP/yc" config set folder-id "$YC_FOLDER_ID"

@@ -1,0 +1,308 @@
+:root {
+  --color-error: #b42318;
+  --font-size-error: 14px;
+  --color-text: #000;
+  --color-surface: #fff;
+  --color-feed: #f5f5f5;
+  --color-divider: #ddd;
+  --color-input-border: #888;
+  --color-placeholder: #888;
+  --color-muted: #666;
+  --color-button: #000;
+
+  --font-body: Arial, sans-serif;
+  --font-helper: 'Helvetica Neue', Helvetica, sans-serif;
+  --font-display: 'New York', 'New York Medium', 'Times New Roman', serif;
+  --font-size-title: clamp(28px, 3.333vw, 64px);
+  --font-size-feed-title: clamp(28px, 2.5vw, 48px);
+  --title-gap: clamp(32px, 4.167vw, 80px);
+  --feed-title-gap: clamp(32px, 3.333vw, 64px);
+  --font-size-body: 16px;
+  --font-size-input: 16px;
+  --font-size-label: 16px;
+  --font-size-notice: 12px;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+  --line-height-title: 1.2;
+  --line-height-message: 1.2;
+
+  --space-2xs: 4px;
+  --space-xs: 6px;
+  --space-sm: 10px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --input-padding-y: 8px;
+  --button-padding-y: 9px;
+
+  --form-width: 512px;
+  --feed-width: 512px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100dvh;
+}
+
+.input-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--space-lg);
+}
+
+form {
+  width: min(100%, var(--form-width));
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  font-style: italic;
+  line-height: var(--line-height-title);
+}
+
+h1 {
+  position: relative;
+  left: 50%;
+  width: max-content;
+  max-width: calc(50vw - 2 * var(--space-lg));
+  transform: translateX(-50%);
+  margin: 0 0 var(--title-gap);
+  text-align: center;
+}
+
+h2 {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  margin: 0 0 calc(var(--feed-title-gap) - var(--space-lg));
+  padding: var(--space-lg) 0;
+  background: var(--color-feed);
+  font-size: var(--font-size-feed-title);
+  text-align: center;
+}
+
+label,
+input::placeholder,
+textarea::placeholder,
+.publish-notice {
+  font-family: var(--font-helper);
+  font-weight: var(--font-weight-regular);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: var(--font-size-label);
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: var(--input-padding-y) var(--space-sm);
+  border: 1px solid var(--color-input-border);
+  border-radius: 0;
+  background: var(--color-surface);
+  color: inherit;
+  font: inherit;
+  font-size: var(--font-size-input);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--color-text);
+  outline: 1px solid var(--color-text);
+  outline-offset: 0;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-md);
+  padding: var(--button-padding-y) var(--space-sm);
+  border: 1px solid var(--color-button);
+  border-radius: 0;
+  background: var(--color-button);
+  color: var(--color-surface);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--font-size-input);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--color-text);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.status {
+  margin: var(--space-sm) auto;
+  color: var(--color-muted);
+  font-size: var(--font-size-notice);
+  line-height: var(--line-height-message);
+  text-align: center;
+}
+
+.status:empty {
+  display: none;
+}
+
+.status.is-error {
+  color: var(--color-error);
+  font-size: var(--font-size-error);
+  white-space: pre-line;
+}
+
+h2:has(+ #feed-status.is-error) {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#feed-status {
+  max-width: var(--feed-width);
+}
+
+.publish-notice {
+  margin: var(--space-xs) 0 0;
+  color: var(--color-placeholder);
+  font-size: var(--font-size-notice);
+  line-height: var(--line-height-title);
+  text-align: center;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+.messages-panel:focus-visible {
+  outline: 1px solid var(--color-text);
+  outline-offset: -1px;
+}
+
+#name-input {
+  margin-bottom: var(--space-md);
+}
+
+.message-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: var(--space-2xs) var(--space-sm);
+  margin-top: var(--space-md);
+  font-size: var(--font-size-label);
+  color: var(--color-muted);
+}
+
+.message-author {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.message-meta time {
+  font-size: var(--font-size-notice);
+  text-align: right;
+}
+
+.message-body {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.messages-panel {
+  background: var(--color-feed);
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding-inline: var(--space-lg);
+}
+
+.messages-panel::before {
+  content: '';
+  display: block;
+  height: max(0px, calc(50dvh - var(--font-size-feed-title) * var(--line-height-title) / 2 - var(--space-lg)));
+}
+
+#messages {
+  width: min(100%, var(--feed-width));
+  margin: 0 auto;
+  padding: 0 0 var(--space-lg);
+  list-style: none;
+}
+
+#messages li {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  line-height: var(--line-height-message);
+  overflow-wrap: anywhere;
+}
+
+textarea {
+  display: block;
+  min-height: 76px;
+  resize: vertical;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --tap-target-size: 44px;
+  }
+
+  .page {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .input-panel {
+    min-height: 100svh;
+    padding-block: calc(2 * var(--space-lg));
+  }
+
+  h1 {
+    max-width: calc(100vw - 2 * var(--space-lg));
+  }
+
+  .messages-panel {
+    height: 100dvh;
+    padding-bottom: var(--space-lg);
+  }
+
+  input,
+  button {
+    min-height: var(--tap-target-size);
+  }
+
+  textarea {
+    min-height: calc(2 * var(--tap-target-size));
+  }
+}

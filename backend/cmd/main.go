@@ -32,14 +32,15 @@ func main() {
 	handler := handler.NewHandler(repository.NewRepository(db))
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /messages", handler.List)
-	mux.HandleFunc("POST /messages", handler.Create)
+
+	mux.HandleFunc("GET /api/messages", handler.List)
+	mux.HandleFunc("POST /api/messages", handler.Create)
 
 	server := &http.Server{
-		Addr:    ":" + getenvOrPanic("PORT"),
-		Handler: mux,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		Addr:    		":" + getenvOrPanic("PORT"),
+		Handler: 		mux,
+		ReadTimeout:  	5 * time.Second,
+		WriteTimeout: 	10 * time.Second,
 	}
 
 	if err := server.ListenAndServe(); err != nil {

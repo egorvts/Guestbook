@@ -49,7 +49,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 
 	message := model.Message{
 		ID: 		uuid.New().String(),
-		Name:   		req.Name,
+		Name:   	req.Name,
 		Content: 	req.Content,
 	}
 
