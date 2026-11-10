@@ -57,14 +57,17 @@ body {
 }
 
 .input-panel {
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
+  row-gap: var(--space-lg);
   min-width: 0;
   padding: var(--space-lg);
 }
 
 form {
+  grid-row: 2;
   width: min(100%, var(--form-width));
 }
 
@@ -102,7 +105,8 @@ h2 {
 label,
 input::placeholder,
 textarea::placeholder,
-.publish-notice {
+.publish-notice,
+.app-info {
   font-family: var(--font-helper);
   font-weight: var(--font-weight-regular);
 }
@@ -189,12 +193,28 @@ h2:has(+ #feed-status.is-error) {
   max-width: var(--feed-width);
 }
 
-.publish-notice {
-  margin: var(--space-xs) 0 0;
+.publish-notice,
+.app-info {
   color: var(--color-placeholder);
   font-size: var(--font-size-notice);
   line-height: var(--line-height-title);
   text-align: center;
+}
+
+.publish-notice {
+  margin: var(--space-xs) 0 0;
+}
+
+.app-info {
+  grid-row: 3;
+  align-self: end;
+  width: min(100%, var(--form-width));
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-info p {
+  margin: 0;
 }
 
 button:focus-visible {

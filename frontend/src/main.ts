@@ -1,5 +1,6 @@
 import './style.css'
-import { createMessage, listMessages, type Message } from './api'
+import { version as frontendVersion } from '../package.json'
+import { createMessage, getAppInfo, listMessages, type Message } from './api'
 
 const app = document.querySelector<HTMLDivElement>('#app')!
 
@@ -30,6 +31,10 @@ app.innerHTML = `
         <p id="form-status" class="status" role="status"></p>
         <p class="publish-notice">Your name and message will be public.<br />Messages cannot be edited or deleted.</p>
       </form>
+      <div class="app-info">
+        <p>Frontend ${frontendVersion} · object storage</p>
+        <p id="backend-info" role="status">Loading backend information…</p>
+      </div>
     </section>
     <section class="messages-panel" aria-label="Messages" tabindex="0">
       <h2>Message Feed</h2>
@@ -46,6 +51,7 @@ const messages = document.querySelector<HTMLUListElement>('#messages')!
 const button = form.querySelector<HTMLButtonElement>('button')!
 const formStatus = document.querySelector<HTMLParagraphElement>('#form-status')!
 const feedStatus = document.querySelector<HTMLParagraphElement>('#feed-status')!
+const backendInfo = document.querySelector<HTMLParagraphElement>('#backend-info')!
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
   day: 'numeric',
@@ -88,6 +94,15 @@ async function refreshMessages(): Promise<void> {
   const cards = entries.map(renderMessage)
   messages.replaceChildren(...cards)
   setStatus(feedStatus, entries.length ? '' : 'No messages yet. Leave the first one!')
+}
+
+async function loadAppInfo(): Promise<void> {
+  try {
+    const info = await getAppInfo()
+    backendInfo.textContent = `Backend ${info.version} · ${info['infrastructure used']}`
+  } catch {
+    backendInfo.textContent = 'Backend information unavailable.'
+  }
 }
 
 form.addEventListener('submit', async (event) => {
@@ -140,4 +155,5 @@ async function initialize(): Promise<void> {
   }
 }
 
+void loadAppInfo()
 void initialize()

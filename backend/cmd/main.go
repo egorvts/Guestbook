@@ -44,6 +44,7 @@ func main() {
 
 	mux.HandleFunc("GET /api/messages", handler.List)
 	mux.HandleFunc("POST /api/messages", handler.Create)
+	mux.HandleFunc("GET /api/info", handler.Version)
 
 	server := &http.Server{
 		Addr:         ":" + getenvOrPanic("PORT"),

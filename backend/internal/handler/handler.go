@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"uuid"
 
+	"github.com/egorvts/Guestbook/internal/buildinfo"
 	"github.com/egorvts/Guestbook/internal/dto"
 	"github.com/egorvts/Guestbook/internal/model"
 )
@@ -25,6 +26,13 @@ func NewHandler(repository MessageRepository) *Handler {
 	return &Handler{
 		repository: repository,
 	}
+}
+
+func (h *Handler) Version(w http.ResponseWriter, r *http.Request) {
+	WriteJSONResponse(w, http.StatusOK, map[string]string{
+		"version":             buildinfo.Version,
+		"infrastructure used": "serverless containers",
+	})
 }
 
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
@@ -48,9 +56,9 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	message := model.Message{
-		ID: 		uuid.New().String(),
-		Name:   	req.Name,
-		Content: 	req.Content,
+		ID:      uuid.New().String(),
+		Name:    req.Name,
+		Content: req.Content,
 	}
 
 	if err := h.repository.Create(r.Context(), &message); err != nil {
