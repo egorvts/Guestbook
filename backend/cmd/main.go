@@ -2,6 +2,8 @@ package main
 
 import (
 	"errors"
+	"flag"
+	"log"
 	"net/http"
 	"os"
 	"sync"
@@ -23,10 +25,17 @@ var (
 )
 
 func main() {
+	migrateOnly := flag.Bool("migrate", false, "Create/update the database schema, then exit")
+	flag.Parse()
+
 	initDB()
-	
-	if err := migrate(); err != nil {
-		panic(err.Error())
+
+	if *migrateOnly {
+		if err := migrate(); err != nil {
+			log.Fatal(err)
+		}
+		log.Print("Schema ready")
+		return
 	}
 
 	handler := handler.NewHandler(repository.NewRepository(db))
@@ -37,10 +46,10 @@ func main() {
 	mux.HandleFunc("POST /api/messages", handler.Create)
 
 	server := &http.Server{
-		Addr:    		":" + getenvOrPanic("PORT"),
-		Handler: 		mux,
-		ReadTimeout:  	5 * time.Second,
-		WriteTimeout: 	10 * time.Second,
+		Addr:         ":" + getenvOrPanic("PORT"),
+		Handler:      mux,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	if err := server.ListenAndServe(); err != nil {
@@ -61,10 +70,10 @@ func initDB() {
 			credentials = ydbSDK.WithAccessTokenCredentials(token)
 		}
 
-		db, err = gorm.Open(ydb.Open(dsn, 
+		db, err = gorm.Open(ydb.Open(dsn,
 			ydb.With(
-				ydbSDK.WithBalancer(balancers.SingleConn()), 
-				credentials, 
+				ydbSDK.WithBalancer(balancers.SingleConn()),
+				credentials,
 				yc.WithInternalCA(),
 			),
 			ydb.WithMaxOpenConns(10),
